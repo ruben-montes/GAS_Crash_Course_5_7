@@ -7,6 +7,11 @@
 #include "GameFramework/Character.h"
 #include "CC_BaseCharacter.generated.h"
 
+namespace CrashTags
+{
+	extern GASCRASHCOURSE_API const FName Player;
+}
+
 class UAttributeSet;
 class UGameplayEffect;
 class UGameplayAbility;
