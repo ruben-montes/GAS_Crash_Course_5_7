@@ -1,0 +1,26 @@
+# Unreal Engine generated
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+Build/
+
+# Ignore only Fab assets (heavy)
+Content/Fab/
+
+# IDEs
+.idea/
+.vscode/
+.vs/
+
+# Visual Studio
+*.VC.db
+*.opensdf
+*.opendb
+*.sdf
+*.sln
+*.suo
+
+# Xcode
+*.xcodeproj
+*.xcworkspace
