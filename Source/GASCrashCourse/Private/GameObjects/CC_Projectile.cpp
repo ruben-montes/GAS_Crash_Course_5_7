@@ -3,9 +3,11 @@
 
 #include "GameObjects/CC_Projectile.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "Characters/CC_PlayerCharacter.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "GameplayTags/CCTags.h"
 
 
 ACC_Projectile::ACC_Projectile()
@@ -27,12 +29,13 @@ void ACC_Projectile::NotifyActorBeginOverlap(AActor* OtherActor)
 	if (!IsValid(AbilitySystemComponent) || !HasAuthority()) return;
 
 	const FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
-	const FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DamageEffect, 1.f, ContextHandle);
+	const FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(
+		DamageEffect, 1.f, ContextHandle);
 
-	// TODO: Use the Damage variable for the amount of damage to cause.
-	
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, CCTags::SetByCaller::Projectile, Damage);
+
 	AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-	
+
 	SpawnImpactEffects();
 	Destroy();
 }
