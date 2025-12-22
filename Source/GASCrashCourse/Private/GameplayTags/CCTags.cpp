@@ -5,9 +5,9 @@ namespace CCTags
 	namespace SetByCaller
 	{
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Projectile, "CCTags.SetByCaller.Projectile",
-									   "Tag for Set By Caller Magnitude for projectiles.")
+		                               "Tag for Set By Caller Magnitude for projectiles.")
 	}
-	
+
 	namespace CCAbilities
 	{
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(ActivateOnGiven, "CCTags.CCAbilities.ActivateOnGiven",
@@ -30,6 +30,14 @@ namespace CCTags
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(KillScored, "CCTags.Events.KillScored",
 		                               "Tag for the KillScored Event.");
 
+		namespace Player
+		{
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "CCTags.Events.Player.HitReact",
+			                               "Tag for the Player HitReact Event.");
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Death, "CCTags.Events.Player.Death",
+			                               "Tag for the Player Death Event.");
+		}
+
 		namespace Enemy
 		{
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "CCTags.Events.Enemy.HitReact",
@@ -37,7 +45,7 @@ namespace CCTags
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(EndAttack, "CCTags.Events.Enemy.EndAttack",
 			                               "Tag for the Enemy Ending an Attack.");
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(MeleeTraceHit, "CCTags.Events.Enemy.MeleeTraceHit",
-										   "Tag for the Enemy Melee Trace Hit.");
+			                               "Tag for the Enemy Melee Trace Hit.");
 		}
 	}
 }
