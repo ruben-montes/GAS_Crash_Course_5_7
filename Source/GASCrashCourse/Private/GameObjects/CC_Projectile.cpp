@@ -33,7 +33,7 @@ void ACC_Projectile::NotifyActorBeginOverlap(AActor* OtherActor)
 	Payload.Target = PlayerCharacter;
 
 	UCC_BlueprintLibrary::SendDamageEventToPlayer(PlayerCharacter, DamageEffect, Payload,
-	                                              CCTags::SetByCaller::Projectile, Damage);
+	                                              CCTags::SetByCaller::Projectile, Damage, CCTags::None);
 
 	SpawnImpactEffects();
 	Destroy();

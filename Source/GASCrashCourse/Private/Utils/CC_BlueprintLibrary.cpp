@@ -77,19 +77,28 @@ FClosestActorWithTagResult UCC_BlueprintLibrary::FindClosestActorWithTag(const U
 
 void UCC_BlueprintLibrary::SendDamageEventToPlayer(AActor* Target, const TSubclassOf<UGameplayEffect>& DamageEffect,
                                                    FGameplayEventData& Payload, const FGameplayTag& DataTag,
-                                                   float Damage, UObject* OptionalParticleSystem)
+                                                   float Damage, const FGameplayTag& EventTagOverride,
+                                                   UObject* OptionalParticleSystem)
 {
 	ACC_BaseCharacter* PlayerCharacter = Cast<ACC_BaseCharacter>(Target);
 	if (!IsValid(PlayerCharacter)) return;
 	if (!PlayerCharacter->IsAlive()) return;
 
-	UCC_AttributeSet* AttributeSet = Cast<UCC_AttributeSet>(PlayerCharacter->GetAttributeSet());
-	if (!IsValid(AttributeSet)) return;
+	FGameplayTag EventTag;
+	if (!EventTagOverride.MatchesTagExact(CCTags::None))
+	{
+		EventTag = EventTagOverride;
+	}
+	else
+	{
+		UCC_AttributeSet* AttributeSet = Cast<UCC_AttributeSet>(PlayerCharacter->GetAttributeSet());
+		if (!IsValid(AttributeSet)) return;
 
-	const bool bLethal = AttributeSet->GetHealth() - Damage <= 0.f;
-	const FGameplayTag EventTag = bLethal
-		                              ? CCTags::Events::Player::Death
-		                              : CCTags::Events::Player::HitReact;
+		const bool bLethal = AttributeSet->GetHealth() - Damage <= 0.f;
+		EventTag = bLethal
+			           ? CCTags::Events::Player::Death
+			           : CCTags::Events::Player::HitReact;
+	}
 
 	Payload.OptionalObject = OptionalParticleSystem;
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(PlayerCharacter, EventTag, Payload);
@@ -103,6 +112,19 @@ void UCC_BlueprintLibrary::SendDamageEventToPlayer(AActor* Target, const TSubcla
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, DataTag, -Damage);
 
 	TargetASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+}
+
+void UCC_BlueprintLibrary::SendDamageEventToPlayers(TArray<AActor*> Targets,
+                                                    const TSubclassOf<UGameplayEffect>& DamageEffect,
+                                                    FGameplayEventData& Payload, const FGameplayTag& DataTag,
+                                                    float Damage, const FGameplayTag& EventTagOverride,
+                                                    UObject* OptionalParticleSystem)
+{
+	for (AActor* Target : Targets)
+	{
+		SendDamageEventToPlayer(Target, DamageEffect, Payload, DataTag, Damage, EventTagOverride,
+		                        OptionalParticleSystem);
+	}
 }
 
 TArray<AActor*> UCC_BlueprintLibrary::HitBoxOverlapTest(AActor* AvatarActor, float HitBoxRadius,
@@ -224,7 +246,7 @@ TArray<AActor*> UCC_BlueprintLibrary::ApplyKnockback(AActor* AvatarActor, const 
 		{
 			EnemyCharacter->StopMovementUntilLanded();
 		}
-		
+
 		HitCharacter->LaunchCharacter(KnockbackForce, true, true);
 	}
 
