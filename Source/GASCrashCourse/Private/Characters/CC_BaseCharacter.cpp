@@ -44,6 +44,7 @@ void ACC_BaseCharacter::GiveStartupAbilities()
 void ACC_BaseCharacter::ApplyGameplayEffect(const TSubclassOf<UGameplayEffect> GameplayEffect) const
 {
 	checkf(IsValid(GameplayEffect), TEXT("GameplayEffect not set."));
+	if (!IsValid(GetAbilitySystemComponent())) return;
 
 	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
 	FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(
