@@ -58,7 +58,10 @@ void UCC_SearchForTarget::StartSearch()
 
 void UCC_SearchForTarget::EndAttackEventReceived(FGameplayEventData Payload)
 {
-	StartSearch();
+	if (OwningEnemy.IsValid() && !OwningEnemy->bIsBeingLaunched)
+	{
+		StartSearch();
+ 	}
 }
 
 void UCC_SearchForTarget::Search()
@@ -110,9 +113,9 @@ void UCC_SearchForTarget::AttackTarget(TEnumAsByte<EPathFollowingResult::Type> R
 		StartSearch();
 		return;
 	}
-	
+
 	OwningEnemy->RotateToTarget(TargetBaseCharacter.Get());
-	
+
 	AttackDelayTask = UAbilityTask_WaitDelay::WaitDelay(this, OwningEnemy->GetTimeLineLength());
 	AttackDelayTask->OnFinish.AddDynamic(this, &ThisClass::Attack);
 	AttackDelayTask->Activate();
