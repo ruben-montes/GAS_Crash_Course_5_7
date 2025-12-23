@@ -13,13 +13,14 @@ UCLASS()
 class GASCRASHCOURSE_API UCC_MeleeAttack : public UAnimNotifyState
 {
 	GENERATED_BODY()
+
 public:
-	virtual void NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime, const FAnimNotifyEventReference& EventReference) override;
+	virtual void NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime,
+	                        const FAnimNotifyEventReference& EventReference) override;
 
 private:
-
 	UPROPERTY(EditAnywhere, Category = "Crash|Debugs")
-	bool bDrawDebugs = true;
+	bool bDrawDebugs{false};
 
 	UPROPERTY(EditAnywhere, Category = "Crash|Socket")
 	FName SocketName{"FX_Trail_01_R"};

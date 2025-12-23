@@ -3,7 +3,6 @@
 
 #include "GameObjects/CC_Projectile.h"
 
-#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "Characters/CC_PlayerCharacter.h"
 #include "GameFramework/ProjectileMovementComponent.h"
